@@ -22,6 +22,11 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
+ * DB coon
+ */
+require("../db")
+
+/**
  * Listen on provided port, on all network interfaces.
  */
 

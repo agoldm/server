@@ -22,9 +22,9 @@ exports.changePassword = async (username,password,newPassword) => {
     }
 }
 
-exports.getAllUsers = async () => {
+exports.getAllUsers = async (filter = {}) => {
     try {
-        let data = await userModel.find({})
+        let data = await userModel.find(filter)
         return { success: true, data: data };
     } catch (error) {
         console.log(error);
