@@ -10,9 +10,10 @@ exports.register = async (user) => {
         return { success: false, error: true, status: 500 };
     }
 }
-exports.changePassword = async (username,password,newPassword) => {
+
+exports.changePassword = async (username, password, newPassword) => {
     try {
-        let data = await userModel.findOne({username,password});
+        let data = await userModel.findOne({ username, password });
         if (!data) return { success: false, error: true, status: 401 };
         data.password = newPassword;
         return exports.updateUser(data._id, data);
@@ -50,7 +51,7 @@ exports.updateUser = async (id, user) => {
         return { success: false, error: true };
     }
 }
-exports.getUser = async (username, password ) => {
+exports.getUser = async (username, password) => {
     try {
         let data = await userModel.findOne({ username, password })
         return { success: true, data: data };
