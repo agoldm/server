@@ -11,9 +11,7 @@ const userSchema = new mongoose.Schema({
     role: {type:String, default:"students"},
     description: {type: String}, 
     rating: {type: Number},
-    // courses: {type: [mongoose.Schema.Types.ObjectId]}, //[course_id]
-    // history: {type: [String]}, //[course_id]
-    favorite: {type: [String]}, //[course_id]
+    favorite: {type: [mongoose.Schema.Types.ObjectId]}, //[course_id]
 });
 
 const userModel = mongoose.model('users', userSchema);
