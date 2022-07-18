@@ -7,7 +7,6 @@ var router = express.Router();
 router.get('/', async function (req, res, next) {
   res.json(await userController.getAllUsers());
 });
-
 router.get('/teachers', async function (req, res, next) {
   res.json(await userController.getAllUsers({ role: "teacher" }));
 });
