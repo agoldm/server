@@ -2,7 +2,8 @@ const { userModel } = require("../db/models/userModel")
 
 exports.register = async (user) => {
     try {
-        let data = await userModel.findOne({ $or: [{ mail: user.mail }, { username: user.username }] })
+        let data = await userModel.findOne({ $or: [{ email: user.email }, { username: user.username }] })
+        console.log(data);
         if (data) return { success: false, error: true, status: 400 };
         return exports.addUser(user)
     } catch (error) {
