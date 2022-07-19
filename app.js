@@ -41,8 +41,11 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
     if (!req.session.randomSecret) {
-        req.session.randomSecret = crypto.randomBytes(64).toString('hex');;
+        //להחליף אחרי הוספת קונטקסט בריאקט
+        //req.session.randomSecret = crypto.randomBytes(64).toString('hex');;
+        req.session.randomSecret = "ABC"
     }
+    console.log("a",req.user);
     next();
 })
 

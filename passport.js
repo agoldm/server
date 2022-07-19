@@ -24,10 +24,12 @@ const strategy  = new LocalStrategy(verifyCallback);
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
+    console.log(user);
     done(null, user.id);
 });
 
 passport.deserializeUser((userId, done) => {
+    console.log(123);
     userModel.findById(userId)
         .then((user) => {
             done(null, user);
