@@ -1,7 +1,7 @@
 var express = require('express');
 var courseController = require('../controllers/courses');
 var router = express.Router();
-
+const multer = require('multer');
 
 router.get('/', async function (req, res, next) {
     res.json(await courseController.getAllCourses());
@@ -21,5 +21,25 @@ router.delete('/:id', async function (req, res, next) {
 router.put('/', async function (req, res, next) {
     res.json(await courseController.updateCourse(req.body));
 });
+
+
+
+const storage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, "public/images");
+    },
+    filename(req, file = {}, cb) {
+        const { originalname } = file;
+        //const fileExtension = (originalname.match(/\.+[\S]+$/) || [])[0];
+        cb(null, originalname);
+    },
+});
+const upload = multer({ storage });
+
+//add flower and upload flower image
+router.post("/uploaded_file", upload.single('uploaded_file'), async (req, res) => {
+    req.body.image = 'images/' + req.file.filename;
+    res.json(await courseController.addCourse(req.body));
+})
 
 module.exports = router;

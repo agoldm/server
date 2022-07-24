@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // })
 app.use(session({
     secret: "avitalshira",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: 'mongodb+srv://shira:0528819696@cluster0.3ioem.mongodb.net/shugi?retryWrites=true&w=majority' }),
     cookie: {
@@ -45,7 +45,6 @@ app.use((req, res, next) => {
         //req.session.randomSecret = crypto.randomBytes(64).toString('hex');;
         req.session.randomSecret = "ABC"
     }
-    console.log("a",req.user);
     next();
 })
 
