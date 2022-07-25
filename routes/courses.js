@@ -37,9 +37,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 //add flower and upload flower image
-router.post("/uploaded_file", upload.single('uploaded_file'), async (req, res) => {
-    req.body.image = 'images/' + req.file.filename;
-    res.json(await courseController.addCourse(req.body));
+router.post("/", async (req, res) => {
+   res.json(await courseController.addCourse(req.body))
+})
+router.post("/uploaded_file", upload.single('File'), async (req, res) => {
+    console.log(req.body);
+    if (req.file) {
+        return res.json({ success: true, imagePath: 'images/' + req.file.filename })
+    } else {
+        return res.status(500).json({ error: true })
+    }
 })
 
 module.exports = router;

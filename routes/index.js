@@ -28,9 +28,10 @@ router.post("/login",
     }
 );
 
-router.get('/logout', (req, res, next) => {
-    req.logout();
-    res.json({ success: true, error: false })
+router.get('/logout', (req, res) => {
+    req.logout(() => {
+        res.json({ success: true, error: false })
+    });  
 });
 
 
