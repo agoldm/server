@@ -19,9 +19,9 @@ exports.addCourse = async (newCourse) => {
         return { success: false, error: true };
     }
 }
-exports.updateCourse = async (id, course) => {
+exports.updateCourse = async (course) => {
     try {
-        let data = await courseModel.updateOne({ _id: id }, course)
+        let data = await courseModel.updateOne({ _id: course._id }, course)
         return { success: true, data: data };
     } catch (error) {
         console.log(error);
