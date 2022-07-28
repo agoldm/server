@@ -26,8 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // })
 app.use(session({
     secret: "avitalshira",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: 'mongodb+srv://shira:0528819696@cluster0.3ioem.mongodb.net/shugi?retryWrites=true&w=majority' }),
     cookie: {
         maxAge: 1000 * 60 * 60 * 24
@@ -40,6 +40,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
+    console.log(req.user);
+    console.log(req.session);
     if (!req.session.randomSecret) {
         //להחליף אחרי הוספת קונטקסט בריאקט
         //req.session.randomSecret = crypto.randomBytes(64).toString('hex');;

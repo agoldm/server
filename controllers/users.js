@@ -60,6 +60,15 @@ exports.getUser = async (username, password) => {
         return { success: false, error: true };
     }
 }
+exports.getUserById = async (id) => {
+    try {
+        let data = await userModel.findById(id)
+        return { success: true, data: data };
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
 exports.deleteUser = async (id) => {
     try {
         let data = await userModel.deleteOne({ _id: id })

@@ -3,34 +3,44 @@ const LocalStrategy = require('passport-local').Strategy;
 
 const { userModel } = require("./db/models/userModel")
 
-const customFields = {
+// const customFields = ;
+
+// const verifyCallback = (username, password, done) => {
+//     userModel.findOne({ username, password })
+//         .then((user) => {
+//             if (!user) { return done(null, false) }
+//             return done(null, user);
+//         })
+//         .catch((err) => {
+//             done(err);
+//         });
+// }
+
+// const strategy = new LocalStrategy(verifyCallback);
+
+passport.use(new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password'
-};
-
-const verifyCallback = (username, password, done) => {
+}, (username, password, done) => {
     userModel.findOne({ username, password })
         .then((user) => {
             if (!user) { return done(null, false) }
+            user = { _id: user._id, username: user.username };
+            console.log(user);
             return done(null, user);
         })
         .catch((err) => {
             done(err);
         });
 }
-
-const strategy = new LocalStrategy(verifyCallback);
-
-passport.use(strategy);
+));
 
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    console.log("seri");
+    done(null, user);
 });
 
-passport.deserializeUser((userId, done) => {
-    userModel.findById(userId)
-        .then((user) => {
-            done(null, user);
-        })
-        .catch(err => done(err))
+passport.deserializeUser((user, done) => {
+    console.log("deseri");
+    done(null, user);
 });

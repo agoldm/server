@@ -20,6 +20,7 @@ router.post("/login",
     },
     passport.authenticate('local'),
     async (req, res) => {
+        console.log(req.user);
         res.json({
             login: true,
             type: req.user.role,

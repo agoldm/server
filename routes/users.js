@@ -13,6 +13,11 @@ router.get('/teachers', async function (req, res, next) {
 router.get('/students', async function (req, res, next) {
   res.json(await userController.getAllUsers({ role: "student" }));
 });
+router.get('/profile', async function (req, res, next) {
+  
+  // res.json(await userController.getUserById("205"));
+  res.json({a:1})
+});
 router.post('/', async function (req, res, next) {
   res.json(await userController.addUser(req.body));
 });
