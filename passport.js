@@ -21,7 +21,7 @@ const { userModel } = require("./db/models/userModel")
 passport.use(new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password'
-}, (username, password, done) => {
+}, async (username, password, done) => {
     userModel.findOne({ username, password })
         .then((user) => {
             if (!user) { return done(null, false) }
@@ -35,12 +35,13 @@ passport.use(new LocalStrategy({
 }
 ));
 
+
 passport.serializeUser((user, done) => {
-    console.log("seri");
+    console.log('Serialized user');
     done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-    console.log("deseri");
+    console.log("Deserializing user...");
     done(null, user);
 });
