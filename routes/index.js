@@ -32,7 +32,7 @@ router.post("/login",
 router.get('/logout', (req, res) => {
     req.logout(() => {
         res.json({ success: true, error: false })
-    });  
+    });
 });
 
 

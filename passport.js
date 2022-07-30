@@ -26,7 +26,7 @@ passport.use(new LocalStrategy({
         .then((user) => {
             if (!user) { return done(null, false) }
             user = { _id: user._id, username: user.username };
-            console.log(user);
+            // console.log(user);
             return done(null, user);
         })
         .catch((err) => {
@@ -37,11 +37,11 @@ passport.use(new LocalStrategy({
 
 
 passport.serializeUser((user, done) => {
-    console.log('Serialized user');
+    // console.log('Serialized user');
     done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-    console.log("Deserializing user...");
+    // console.log("Deserializing user...");
     done(null, user);
 });
