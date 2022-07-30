@@ -34,7 +34,6 @@ app.use(session({
     }
 }));
 
-require('./passport');
 
 app.use(passport.initialize());
 app.use(passport.session());
