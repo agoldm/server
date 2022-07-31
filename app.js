@@ -3,9 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-const crypto = require('crypto');
 const session = require('express-session');
-var flash = require('connect-flash');
 const MongoStore = require('connect-mongo');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -57,9 +55,10 @@ app.use('/courses', coursesRouter);
 
 
 // ///socket
-const { Server } = require("socket.io");
 const http = require("http");
+const { Server } = require("socket.io");
 const server = http.createServer(app);
+
 const io = new Server(server, {
     cors: {
         origin: "http://localhost:3000",
@@ -71,11 +70,12 @@ io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
 
     socket.on("join_room", (data) => {
-        socket.join(data);
+        socket.join("!", data);
         console.log(`User with ID: ${socket.id} joined room: ${data}`);
     });
 
     socket.on("send_message", (data) => {
+        console.log(data.room);
         socket.to(data.room).emit("receive_message", data);
     });
 
@@ -83,5 +83,9 @@ io.on("connection", (socket) => {
         console.log("User Disconnected", socket.id);
     });
 });
+
+// server.listen(3001, () => {
+//     console.log("SERVER RUNNING");
+// });
 
 module.exports = app;
