@@ -3,22 +3,25 @@ var courseController = require('../controllers/courses');
 var router = express.Router();
 const multer = require('multer');
 
+const { isAuthentication } = require("../middlewares/jwt")
+
 router.get('/', async function (req, res, next) {
     res.json(await courseController.getAllCourses());
 });
-router.get('/my-courses', async function (req, res, next) {
-    res.json(await courseController.getAllCourses({ status: true }));
+router.get('/my-courses', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.getAllCourses(res.locals.userID));
 });
-router.get('/my-courses-history', async function (req, res, next) {
+//not done yet
+router.get('/my-courses-history', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getAllCourses({ status: false }));
 });
-router.post('/', async function (req, res, next) {
+router.post('/', isAuthentication, async function (req, res, next) {
     res.json(await courseController.addCourse(req.body));
 });
-router.delete('/:id', async function (req, res, next) {
+router.delete('/:id', isAuthentication, async function (req, res, next) {
     res.json(await courseController.deleteCourse(req.params.id));
 });
-router.put('/', async function (req, res, next) {
+router.put('/', isAuthentication, async function (req, res, next) {
     res.json(await courseController.updateCourse(req.body));
 });
 
@@ -38,7 +41,7 @@ const upload = multer({ storage });
 
 //add flower and upload flower image
 router.post("/", async (req, res) => {
-   res.json(await courseController.addCourse(req.body))
+    res.json(await courseController.addCourse(req.body))
 })
 router.post("/uploaded_file", upload.single('File'), async (req, res) => {
     console.log(req.body);
