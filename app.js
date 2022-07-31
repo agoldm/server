@@ -11,7 +11,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var coursesRouter = require('./routes/courses');
 var app = express();
-const { isAuthentication } = require("./jwt")
+const { isAuthentication } = require("./middlewares/jwt")
 app.use(logger('dev'));
 app.use(cors());
 app.use(express.json());

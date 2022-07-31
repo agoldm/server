@@ -22,7 +22,11 @@ exports.addCourse = async (newCourse) => {
 exports.updateCourse = async (course) => {
     try {
         let data = await courseModel.updateOne({ _id: course._id }, course)
-        return { success: true, data: data };
+        if (data.modifiedCount > 0) {
+            return { success: true, data: data };
+        } else {
+            return { success: false, error: true };
+        }
     } catch (error) {
         console.log(error);
         return { success: false, error: true };

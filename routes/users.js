@@ -1,7 +1,7 @@
 var express = require('express');
 var userController = require('../controllers/users');
 var router = express.Router();
-const { isAuthentication } = require("../jwt")
+const { isAuthentication } = require("../middlewares/jwt")
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
