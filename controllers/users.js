@@ -1,10 +1,26 @@
 const { userModel } = require("../db/models/userModel")
+const bcrypt = require('bcrypt')
 
 exports.register = async (user) => {
     try {
         let data = await userModel.findOne({ $or: [{ email: user.email }, { username: user.username }] })
         if (data) return { success: false, error: true, status: 400 };
         return exports.addUser(user)
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true, status: 500 };
+    }
+}
+
+exports.login = async (username, password) => {
+    try {
+        let data = await userModel.findOne({ username })
+        if (!data) return { success: false, error: true, status: 401 };
+
+        let comparePass = await bcrypt.compare(password, data.password);
+        if (!comparePass) return { success: false, error: true, status: 401 };
+
+        return data;
     } catch (error) {
         console.log(error);
         return { success: false, error: true, status: 500 };
@@ -45,7 +61,11 @@ exports.addUser = async (newUser) => {
 exports.updateUser = async (id, user) => {
     try {
         let data = await userModel.updateOne({ _id: id }, user)
-        return { success: true, data: data };
+        if (data.modifiedCount > 0) {
+            return { success: true, data: data };
+        } else {
+            return { success: false, error: true };
+        }
     } catch (error) {
         console.log(error);
         return { success: false, error: true };

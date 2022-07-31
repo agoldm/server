@@ -16,7 +16,7 @@ const courseSchema = new mongoose.Schema({
     price_per_time: { type: String, required: true },
     max_student: { type: Number, required: true },
     image: { type: String },
-    teacher_id: { type: String },
+    teacher_id: { type: mongoose.Schema.Types.ObjectId },
     num_of_classes: { type: Number },
     start_date: { type: Date },
     end_date: { type: Date },

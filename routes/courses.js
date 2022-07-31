@@ -3,11 +3,14 @@ var courseController = require('../controllers/courses');
 var router = express.Router();
 const multer = require('multer');
 
+const {isAuthentication} = require("../jwt")
+
 router.get('/', async function (req, res, next) {
     res.json(await courseController.getAllCourses());
 });
-router.get('/my-courses', async function (req, res, next) {
-    res.json(await courseController.getAllCourses({ status: true }));
+router.get('/my-courses', isAuthentication, async function (req, res, next) {
+    console.log(res.locals.userID);
+    res.json(await courseController.getAllCourses(res.locals.userID));
 });
 router.get('/my-courses-history', async function (req, res, next) {
     res.json(await courseController.getAllCourses({ status: false }));

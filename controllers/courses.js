@@ -1,8 +1,8 @@
 const { courseModel } = require("../db/models/courseModel")
 
-exports.getAllCourses = async () => {
+exports.getAllCourses = async (userID = null) => {
     try {
-        let data = await courseModel.find({})
+        let data = await courseModel.find({ teacher_id: userID })
         return { success: true, data: data };
     } catch (error) {
         console.log(error);
