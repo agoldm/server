@@ -1,8 +1,8 @@
 const { courseModel } = require("../db/models/courseModel")
 
-exports.getAllCourses = async () => {
+exports.getAllCourses = async (userID = null) => {
     try {
-        let data = await courseModel.find({})
+        let data = await courseModel.find({ teacher_id: userID })
         return { success: true, data: data };
     } catch (error) {
         console.log(error);
@@ -22,7 +22,11 @@ exports.addCourse = async (newCourse) => {
 exports.updateCourse = async (course) => {
     try {
         let data = await courseModel.updateOne({ _id: course._id }, course)
-        return { success: true, data: data };
+        if (data.modifiedCount > 0) {
+            return { success: true, data: data };
+        } else {
+            return { success: false, error: true };
+        }
     } catch (error) {
         console.log(error);
         return { success: false, error: true };
