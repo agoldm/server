@@ -48,7 +48,7 @@ router.post("/login",
             let user = await userController.login(req.body.username, req.body.password);
             if (user.error) return res.status(401).json({ error: true });
 
-            let token = await jwt.sign({ _id: user._id }, "AVITALANDSHIRA", { expiresIn: "1h" });
+            let token = await jwt.sign({ _id: user._id, name: user.name, role: user.role }, "AVITALANDSHIRA", { expiresIn: "1h" });
             let role = user.role;
             res.json({ token, role });
         } catch (error) {
