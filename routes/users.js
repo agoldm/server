@@ -8,7 +8,6 @@ router.get('/', async function (req, res, next) {
   res.json(await userController.getAllUsers());
 });
 router.get('/teachers', async function (req, res, next) {
-  console.log(2);
   res.json(await userController.getAllUsers({ role: "teacher" }));
 });
 router.get('/students', async function (req, res, next) {

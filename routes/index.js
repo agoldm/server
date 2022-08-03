@@ -65,18 +65,18 @@ router.post("/reset-password", async function (req, res, next) {
 
         // create transporter object with smtp server details
         var transporter = nodemailer.createTransport({
-            service: 'Walla',
+            service: 'Outlook',
             // port: 2525,
             auth: {
-                user: 'shugipro@walla.co.il',
+                user: 'shugipro@outlook.co.il',
                 pass: 'mother2022'
             },
             secure: false,
+            host: 'smtp-mail.outlock.com'
         });
 
-        console.log(2);
         var mailOptions = {
-            from: 'shugipro@walla.co.il',
+            from: 'shugipro@outlook.co.il',
             // to: req.user.mail,
             to: `${data.email}`,
             subject: 'Reset Password',
@@ -87,14 +87,14 @@ router.post("/reset-password", async function (req, res, next) {
         await userController.changePassword(req.body.user, newPassword);
         res.json({ success: true, error: false, newPassword: newPassword })
         // send email
-        // transporter.sendMail(mailOptions, function (error, info) {
-        //     if (error) {
-        //         console.log(error);
-        //         res.json({ success: false, error: true })
-        //     } else {
-        //         res.json({ success: true, error: false })
-        //     }
-        // });
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+                res.json({ success: false, error: true })
+            } else {
+                res.json({ success: true, error: false })
+            }
+        });
     }
 });
 
