@@ -11,6 +11,9 @@ router.get('/', async function (req, res, next) {
 router.get('/my-courses', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getAllCourses(res.locals.userID));
 });
+router.get('/my-students', async function (req, res, next) {
+    res.json(await courseController.getMyStudents(res.locals.userID));
+});
 //not done yet
 router.get('/my-courses-history', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getAllCourses({ status: false }));

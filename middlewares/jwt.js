@@ -25,7 +25,8 @@ const isAdmin = async (req, res, next) => {
         next();
     }
 }
-exports.isAdmin = checkIfManager;
+exports.isAdmin = isAdmin;
+
 
 const getUserType = async (id) => {
     try {

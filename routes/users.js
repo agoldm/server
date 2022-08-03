@@ -13,8 +13,12 @@ router.get('/teachers', async function (req, res, next) {
 router.get('/students', async function (req, res, next) {
   res.json(await userController.getAllUsers({ role: "student" }));
 });
+
 router.get('/profile', async function (req, res) {
   res.json(await userController.getUserById(res.locals.userID));
+});
+router.get('/favorite-course', async function (req, res, next) {
+  res.json(await userController.getUserFavorite(res.locals.userID));
 });
 router.post('/', async function (req, res, next) {
   res.json(await userController.addUser(req.body));

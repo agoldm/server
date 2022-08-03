@@ -21,7 +21,7 @@ const courseSchema = new mongoose.Schema({
     start_date: { type: Date },
     end_date: { type: Date },
     long: { type: String },
-    students_ids: { type: [mongoose.Schema.Types.ObjectId] },
+    students_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
     rating: { type: Number },
     status: { type: Boolean, default: true }
 });

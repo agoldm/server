@@ -1,5 +1,5 @@
 const { userModel } = require("../db/models/userModel")
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 exports.register = async (user) => {
     try {
@@ -88,6 +88,16 @@ exports.getUser = async (username, password) => {
     try {
         let data = await userModel.findOne({ username, password })
         return { success: true, data: data };
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
+
+exports.getUserFavorite = async (id) => {
+    try {
+        let data = await userModel.findOne({ _id: id }).populate('favorite')
+        return { success: true, data: data.favorite };
     } catch (error) {
         console.log(error);
         return { success: false, error: true };
