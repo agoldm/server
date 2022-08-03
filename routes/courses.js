@@ -23,6 +23,9 @@ router.get('/getMyTeachers', isAuthentication, async function (req, res, next) {
 router.post('/signCourse', isAuthentication, async function (req, res, next) {
     res.json(await courseController.signCourse(req.body.courseId, res.locals.userID));
 });
+router.post('/delete-student-from-course', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.deleteStudentFromCourse(req.body.courseId, res.locals.userID));
+});
 //not done yet
 router.get('/my-courses-history', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getAllCourses({ status: false }));

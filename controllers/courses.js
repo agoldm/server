@@ -74,6 +74,19 @@ exports.signCourse = async (courseId, studentId) => {
         return { success: false, error: true };
     }
 }
+
+exports.deleteStudentFromCourse = async (courseId, studentId) => {
+    try {
+        let data = await courseModel.updateOne({ _id: courseId }, { $pull: { 'students_ids': studentId } })
+        if (data.modifiedCount > 0) {
+            return { success: true, data: data };
+        } else {
+            return { success: false, error: true };
+        }
+    } catch (error) {
+        return { success: false, error: true };
+    }
+}
 exports.getStudentCourses = async (userID) => {
     try {
         let data = await courseModel.find({ students_ids: userID })
