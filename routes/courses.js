@@ -9,10 +9,13 @@ router.get('/', async function (req, res, next) {
     res.json(await courseController.getAllCourses());
 });
 router.get('/my-courses', isAuthentication, async function (req, res, next) {
-    res.json(await courseController.getAllCourses(res.locals.userID));
+    res.json(await courseController.getMyCourses(res.locals.userID));
 });
 router.get('/my-students', async function (req, res, next) {
     res.json(await courseController.getMyStudents(res.locals.userID));
+});
+router.get('/student-courses', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.getStudentCourses(res.locals.userID));
 });
 router.get('/getMyTeachers', async function (req, res, next) {
     res.json(await courseController.getMyTeachers(req.body.id));
@@ -25,7 +28,7 @@ router.get('/my-courses-history', isAuthentication, async function (req, res, ne
     res.json(await courseController.getAllCourses({ status: false }));
 });
 router.post('/', isAuthentication, async function (req, res, next) {
-    res.json(await courseController.addCourse(req.body));
+    res.json(await courseController.addCourse({ teacher_id: res.locals.userID, ...req.body }));
 });
 router.delete('/:id', isAuthentication, async function (req, res, next) {
     res.json(await courseController.deleteCourse(req.params.id));
