@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/', indexRouter);
-app.use('/users', isAuthentication, usersRouter);
+app.use('/users',  usersRouter);
 app.use('/courses', coursesRouter);
 // app.use(isAuthentication)
 

@@ -27,11 +27,11 @@ exports.login = async (username, password) => {
     }
 }
 
-exports.changePassword = async (username, password, newPassword) => {
+exports.changePassword = async (username, newPassword) => {
     try {
-        let data = await userModel.findOne({ username, password });
+        let data = await userModel.findOne({ username });
         if (!data) return { success: false, error: true, status: 401 };
-        data.password = newPassword;
+        data.password = await bcrypt.hash(newPassword, 10);
         return exports.updateUser(data._id, data);
     } catch (error) {
         console.log(error);
@@ -106,7 +106,15 @@ exports.getUser = async (username, password) => {
         return { success: false, error: true };
     }
 }
-
+exports.getUserMail = async (username) => {
+    try {
+        let data = await userModel.findOne({ username })
+        return { success: true, email: data.email };
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
 exports.getUserFavorite = async (id) => {
     try {
         let data = await userModel.findOne({ _id: id }).populate('favorite')
