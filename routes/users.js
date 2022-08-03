@@ -24,8 +24,10 @@ router.post('/', async function (req, res, next) {
   res.json(await userController.addUser(req.body));
 });
 router.post('/favorite-course', async function (req, res, next) {
-  console.log(res.locals.userID, req.body.courseId);
   res.json(await userController.addFavoriteCourse(res.locals.userID, req.body.courseId));
+});
+router.delete('/favorite-course', async function (req, res, next) {
+  res.json(await userController.deleteFavoriteCourse(res.locals.userID, req.body.courseId));
 });
 router.delete('/', async function (req, res, next) {
   res.json(await userController.deleteUser(req.body));

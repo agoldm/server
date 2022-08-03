@@ -16,7 +16,6 @@ const upload = multer({ storage });
 
 //add flower and upload flower image
 router.post("/uploaded_file", upload.single('File'), async (req, res) => {
-    console.log(req.file)
     res.json({ a: "1" })
     //req.body.image = 'images/' + req.file.filename;
     //res.json(await addCourse(req.body))

@@ -71,6 +71,19 @@ exports.addFavoriteCourse = async (id, courseId) => {
         return { success: false, error: true };
     }
 }
+exports.deleteFavoriteCourse = async (id, courseId) => {
+    try {
+        let data = await userModel.updateOne({ _id: id }, { $pull: { 'favorite': courseId } })
+        if (data.modifiedCount > 0) {
+            return { success: true, data: data };
+        } else {
+            return { success: false, error: true };
+        }
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
 exports.updateUser = async (id, user) => {
     try {
         let data = await userModel.updateOne({ _id: id }, user)

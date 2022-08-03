@@ -18,22 +18,6 @@ router.post("/register", async (req, res) => {
     res.status(Number(data.status) || 200).json(data);
 })
 
-// router.post("/login",
-//     (req, res, next) => {
-//         midPassword = cryptoJS.AES.decrypt(req.body.password, req.session.randomSecret);
-//         req.body.password = midPassword.toString(cryptoJS.enc.Utf8);
-//         next();
-//     },
-//     passport.authenticate('local'),
-//     async (req, res) => {
-//         console.log(req.user);
-//         res.json({
-//             login: true,
-//             type: req.user.role,
-//             username: req.user.username
-//         });
-//     }
-// );
 router.post("/login",
     (req, res, next) => {
         midPassword = cryptoJS.AES.decrypt(req.body.password, req.session.randomSecret);

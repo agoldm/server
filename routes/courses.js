@@ -14,6 +14,12 @@ router.get('/my-courses', isAuthentication, async function (req, res, next) {
 router.get('/my-students', async function (req, res, next) {
     res.json(await courseController.getMyStudents(res.locals.userID));
 });
+router.get('/getMyTeachers', async function (req, res, next) {
+    res.json(await courseController.getMyTeachers(req.body.id));
+});
+router.post('/signCourse', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.signCourse(req.body.courseId, res.locals.userID));
+});
 //not done yet
 router.get('/my-courses-history', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getAllCourses({ status: false }));
@@ -47,7 +53,6 @@ router.post("/", async (req, res) => {
     res.json(await courseController.addCourse(req.body))
 })
 router.post("/uploaded_file", upload.single('File'), async (req, res) => {
-    console.log(req.body);
     if (req.file) {
         return res.json({ success: true, imagePath: 'images/' + req.file.filename })
     } else {

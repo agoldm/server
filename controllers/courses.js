@@ -19,6 +19,30 @@ exports.getMyStudents = async (userID = null) => {
         return { success: false, error: true };
     }
 }
+
+exports.getMyTeachers = async (userID = null) => {
+    try {
+        let data = await courseModel.find({ students_ids: userID }).populate('students_ids')
+        return { success: true, data: data };
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
+
+exports.signCourse = async (courseId, studentId) => {
+    try {
+        let data = await courseModel.updateOne({ _id: courseId }, { $addToSet: { 'students_ids': studentId } })
+        if (data.modifiedCount > 0) {
+            return { success: true, data: data };
+        } else {
+            return { success: false, error: true };
+        }
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
 exports.addCourse = async (newCourse) => {
     try {
         let course = new courseModel(newCourse)
