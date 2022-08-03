@@ -20,12 +20,12 @@ exports.getMyCourses = async (userID) => {
 exports.getMyStudents = async (userID) => {
     try {
 
-        let data = await courseModel.find({ teacher_id: userID });//כל היוזרים CONTACT
+        let data = await courseModel.find({ teacher_id: userID });
         let ids = [];
         data.map(c => {
             ids = [...ids, c.students_ids]
         });
-        console.log(ids);
+
         // delete duplicated
         let uniqueId = [];
         ids.forEach((c) => {
@@ -33,11 +33,7 @@ exports.getMyStudents = async (userID) => {
                 uniqueId.push(c);
             }
         });
-
-
         const records = await userModel.find({ _id: { $in: uniqueId } })
-
-        console.log(records);
         return { success: true, data: records };
     } catch (error) {
         console.log(error);
@@ -47,17 +43,22 @@ exports.getMyStudents = async (userID) => {
 
 exports.getMyTeachers = async (userID) => {
     try {
-        let data = await courseModel.find({ students_ids: userID }).populate('teacher_id')
-            .exec(function (err, users) {
-                data = users.filter(function (course) {
-                    console.log(course);
-                    return course.teacher_id;
-                });
-            });
-        console.log(1, data);
-        return { success: true, data: data };
+        let data = await courseModel.find({ students_ids: userID })
+        let ids = [];
+        data.map(c => {
+            ids = [...ids, c.teacher_id]
+        });
+
+        // delete duplicated
+        let uniqueId = [];
+        ids.forEach((c) => {
+            if (!uniqueId.includes(c)) {
+                uniqueId.push(c);
+            }
+        });
+        const records = await userModel.find({ _id: { $in: uniqueId } })
+        return { success: true, data: records };
     } catch (error) {
-        console.log(error);
         return { success: false, error: true };
     }
 }
@@ -70,7 +71,6 @@ exports.signCourse = async (courseId, studentId) => {
             return { success: false, error: true };
         }
     } catch (error) {
-        console.log(error);
         return { success: false, error: true };
     }
 }

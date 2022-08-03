@@ -11,14 +11,14 @@ router.get('/', async function (req, res, next) {
 router.get('/my-courses', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getMyCourses(res.locals.userID));
 });
-router.get('/my-students',isAuthentication, async function (req, res, next) {
+router.get('/my-students', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getMyStudents(res.locals.userID));
 });
 router.get('/student-courses', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getStudentCourses(res.locals.userID));
 });
-router.get('/getMyTeachers', async function (req, res, next) {
-    res.json(await courseController.getMyTeachers(req.body.id));
+router.get('/getMyTeachers', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.getMyTeachers(res.locals.userID));
 });
 router.post('/signCourse', isAuthentication, async function (req, res, next) {
     res.json(await courseController.signCourse(req.body.courseId, res.locals.userID));
