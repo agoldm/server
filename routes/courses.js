@@ -11,7 +11,7 @@ router.get('/', async function (req, res, next) {
 router.get('/my-courses', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getMyCourses(res.locals.userID));
 });
-router.get('/my-students', async function (req, res, next) {
+router.get('/my-students',isAuthentication, async function (req, res, next) {
     res.json(await courseController.getMyStudents(res.locals.userID));
 });
 router.get('/student-courses', isAuthentication, async function (req, res, next) {
