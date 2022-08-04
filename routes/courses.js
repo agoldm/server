@@ -9,14 +9,29 @@ router.get('/', async function (req, res, next) {
     res.json(await courseController.getAllCourses());
 });
 router.get('/my-courses', isAuthentication, async function (req, res, next) {
-    res.json(await courseController.getAllCourses(res.locals.userID));
+    res.json(await courseController.getMyCourses(res.locals.userID));
+});
+router.get('/my-students', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.getMyStudents(res.locals.userID));
+});
+router.get('/student-courses', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.getStudentCourses(res.locals.userID));
+});
+router.get('/getMyTeachers', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.getMyTeachers(res.locals.userID));
+});
+router.post('/signCourse', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.signCourse(req.body.courseId, res.locals.userID));
+});
+router.post('/delete-student-from-course', isAuthentication, async function (req, res, next) {
+    res.json(await courseController.deleteStudentFromCourse(req.body.courseId, res.locals.userID));
 });
 //not done yet
 router.get('/my-courses-history', isAuthentication, async function (req, res, next) {
     res.json(await courseController.getAllCourses({ status: false }));
 });
 router.post('/', isAuthentication, async function (req, res, next) {
-    res.json(await courseController.addCourse(req.body));
+    res.json(await courseController.addCourse({ teacher_id: res.locals.userID, ...req.body }));
 });
 router.delete('/:id', isAuthentication, async function (req, res, next) {
     res.json(await courseController.deleteCourse(req.params.id));
@@ -44,7 +59,6 @@ router.post("/", async (req, res) => {
     res.json(await courseController.addCourse(req.body))
 })
 router.post("/uploaded_file", upload.single('File'), async (req, res) => {
-    console.log(req.body);
     if (req.file) {
         return res.json({ success: true, imagePath: 'images/' + req.file.filename })
     } else {

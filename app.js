@@ -3,15 +3,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-const crypto = require('crypto');
 const session = require('express-session');
-//var passport = require('passport');
 const MongoStore = require('connect-mongo');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var coursesRouter = require('./routes/courses');
 var app = express();
 const { isAuthentication } = require("./middlewares/jwt")
+
 app.use(logger('dev'));
 app.use(cors());
 app.use(express.json());
@@ -44,7 +43,10 @@ app.use((req, res, next) => {
 })
 
 app.use('/', indexRouter);
-app.use('/users', isAuthentication, usersRouter);
+app.use('/users',  usersRouter);
 app.use('/courses', coursesRouter);
+// app.use(isAuthentication)
+
+
 
 module.exports = app;

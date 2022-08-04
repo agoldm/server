@@ -1,5 +1,5 @@
 const { userModel } = require("../db/models/userModel")
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 exports.register = async (user) => {
     try {
@@ -27,11 +27,11 @@ exports.login = async (username, password) => {
     }
 }
 
-exports.changePassword = async (username, password, newPassword) => {
+exports.changePassword = async (username, newPassword) => {
     try {
-        let data = await userModel.findOne({ username, password });
+        let data = await userModel.findOne({ username });
         if (!data) return { success: false, error: true, status: 401 };
-        data.password = newPassword;
+        data.password = await bcrypt.hash(newPassword, 10);
         return exports.updateUser(data._id, data);
     } catch (error) {
         console.log(error);
@@ -58,6 +58,32 @@ exports.addUser = async (newUser) => {
         return { success: false, error: true };
     }
 }
+exports.addFavoriteCourse = async (id, courseId) => {
+    try {
+        let data = await userModel.updateOne({ _id: id }, { $addToSet: { 'favorite': courseId } })
+        if (data.modifiedCount > 0) {
+            return { success: true, data: data };
+        } else {
+            return { success: false, error: true };
+        }
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
+exports.deleteFavoriteCourse = async (id, courseId) => {
+    try {
+        let data = await userModel.updateOne({ _id: id }, { $pull: { 'favorite': courseId } })
+        if (data.modifiedCount > 0) {
+            return { success: true, data: data };
+        } else {
+            return { success: false, error: true };
+        }
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
 exports.updateUser = async (id, user) => {
     try {
         let data = await userModel.updateOne({ _id: id }, user)
@@ -75,6 +101,24 @@ exports.getUser = async (username, password) => {
     try {
         let data = await userModel.findOne({ username, password })
         return { success: true, data: data };
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
+exports.getUserMail = async (username) => {
+    try {
+        let data = await userModel.findOne({ username })
+        return { success: true, email: data.email };
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: true };
+    }
+}
+exports.getUserFavorite = async (id) => {
+    try {
+        let data = await userModel.findOne({ _id: id }).populate('favorite')
+        return { success: true, data: data.favorite };
     } catch (error) {
         console.log(error);
         return { success: false, error: true };

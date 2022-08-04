@@ -9,6 +9,7 @@ const isAuthentication = async (req, res, next) => {
     try {
         let verifyToken = jwt.verify(token, 'AVITALANDSHIRA');
         res.locals.userID = await verifyToken._id;
+        res.locals.role = await verifyToken.role;
         next();
     } catch (error) {
         console.log(error);
@@ -17,14 +18,15 @@ const isAuthentication = async (req, res, next) => {
 }
 exports.isAuthentication = isAuthentication;
 
-const checkIfManager = async (req, res, next) => {
-    if (res.locals.userType != 'm') {
+const isAdmin = async (req, res, next) => {
+    if (res.locals.role != 'admin') {
         res.status(403).json({ success: false, error: true, message: "you have to be manager" });
     } else {
         next();
     }
 }
-exports.checkIfManager = checkIfManager;
+exports.isAdmin = isAdmin;
+
 
 const getUserType = async (id) => {
     try {
