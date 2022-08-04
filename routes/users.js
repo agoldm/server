@@ -14,6 +14,9 @@ router.get('/students', async function (req, res, next) {
   res.json(await userController.getAllUsers({ role: "student" }));
 });
 
+router.post('/update-user', isAuthentication, async function (req, res) {
+  res.json(await userController.getUserById(req.body.userID));
+});
 router.get('/profile', isAuthentication, async function (req, res) {
   res.json(await userController.getUserById(res.locals.userID));
 });
